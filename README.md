@@ -18,3 +18,8 @@
         php artisan breeze:install
         npm install
         npm run dev
+
+>5 MaKe model Role with RoleController And Migration table
+
+    php artisan make:model Role -mcr
+
