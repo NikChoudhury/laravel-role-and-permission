@@ -8,9 +8,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        
                 <div class="p-6 bg-white border-b border-gray-200">
-
-                    <x-link-button href="{{ route('admin.post') }}">
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    <x-link-button href="{{ route('admin.post.create') }}">
                         {{ __('Create') }}
                     </x-link-button>
 
@@ -18,31 +20,41 @@
                         <table class="table-auto" width="100%">
                             <thead style="background-color: rgb(167, 121, 121);">
                               <tr >
-                                <th>Sl</th>  
-                                <th>Song</th>
-                                <th>Artist</th>
-                                <th>Year</th>
+                                <th width="10%">Id</th>  
+                                <th width="50%">Post Name</th>
+                                <th width="30%">Writter</th>
+                                <th width="20%">Action</th>
                               </tr>
                             </thead>
                             <tbody class="border" style="text-align: center">
-                              <tr>
-                                <td>1</td>
-                                <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-                                <td>Malcolm Lockyer</td>
-                                <td>1961</td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Witchy Woman</td>
-                                <td>The Eagles</td>
-                                <td>1972</td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>Shining Star</td>
-                                <td>Earth, Wind, and Fire</td>
-                                <td>1975</td>
-                              </tr>
+                                @foreach ($posts as $post)
+                                <tr>
+                                    <td>{{$post['id']}}</td>
+                                    <td>{{$post['name']}}</td>
+                                    <td>{{$post['created_by']}}</td>
+                                    <td>
+                                        <div style="display: flex;aline-items:center;justify-content: center;margin:.2rem 0rem">
+                                            <x-link-button href="{{ route('admin.post.edit',$post['id']) }}" style="background-color: rgb(103, 103, 192)">
+                                                {{ __('Edit') }}
+                                            </x-link-button>
+
+                                            <x-link-button href="{{ route('admin.post.show',$post['id']) }}" style="background-color: rgb(57, 197, 213); margin-left:.4rem">
+                                                {{ __('Show') }}
+                                            </x-link-button>
+    
+                                            <form method="POST" action="{{ route('admin.post.destroy',$post['id']) }}">
+                                                @csrf
+                                                @method("DELETE")
+                                                <x-button class="ml-3" style="background-color: rgb(244, 75, 75)">
+                                                    {{ __('Delete') }}
+                                                </x-button>
+                                            </form>    
+    
+                                        </div>
+                                        
+                                    </td>
+                                </tr>
+                                @endforeach
                             </tbody>
                           </table>
                     </div>

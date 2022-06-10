@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Admin\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +26,11 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function()
     })->name('dashboard');
 
     // Post
-    Route::get('post', function () {
-        return view('post');
-    })->name('post');
+    // Route::get('post', function () {
+    //     return view('post');
+    // })->name('post');
+    // Post
+    Route::resource('post', PostController::class);
 
 
     Route::post('logout', [AdminController::class,'logout'])
