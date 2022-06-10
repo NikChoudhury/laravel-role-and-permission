@@ -19,9 +19,16 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function(){
+    // Dashboard 
     Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    // Post
+    Route::get('post', function () {
+        return view('post');
+    })->name('post');
+
 
     Route::post('logout', [AdminController::class,'logout'])
         ->name('logout');

@@ -30,3 +30,11 @@
 > Make Middleware
 
     php artisan make:middleware Admin
+
+> Make model Post with PostController And Migration table
+
+    php artisan make:model Post -mcr   
+
+> Migrate Role And Post Table
+
+    php artisan migrate     
