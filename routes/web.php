@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Admin\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function(){
+    // Dashboard 
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Post
+    // Route::get('post', function () {
+    //     return view('post');
+    // })->name('post');
+    // Post
+    Route::resource('post', PostController::class);
+
+
+    Route::post('logout', [AdminController::class,'logout'])
+        ->name('logout');
+});
+
+// Route::middleware(['Admin'])->group(['prefix'=>'admin'],function (){
+ 
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+
+//     Route::post('logout', [AdminController::class,'logout'])
+//         ->name('logout');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard1');
+// })->name('dashboard');
+
 
 require __DIR__.'/auth.php';

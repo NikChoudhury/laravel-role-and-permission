@@ -13,3 +13,19 @@
         </ul>
     </div>
 @endif
+@if (session()->has('failed'))
+    <div {{ $attributes }}>
+        <div class="font-medium text-red-600">
+            {{session()->get('failed')}}
+        </div>
+    </div>
+@endif
+
+@if (session()->has('success'))
+    <div {{ $attributes }}>
+        <div class="font-medium text-green-600">
+            {{session()->get('success')}}
+        </div>
+    </div>
+@endif
+
