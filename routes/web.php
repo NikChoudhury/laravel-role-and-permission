@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,32 +25,18 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function()
     Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    // Post
-    // Route::get('post', function () {
-    //     return view('post');
-    // })->name('post');
-    // Post
+    
+    //Post
     Route::resource('post', PostController::class);
+
+    // Role
+    Route::resource('roles', RoleController::class);
 
 
     Route::post('logout', [AdminController::class,'logout'])
         ->name('logout');
 });
 
-// Route::middleware(['Admin'])->group(['prefix'=>'admin'],function (){
- 
-//     Route::get('/dashboard', function () {
-//         return view('dashboard');
-//     })->name('dashboard');
-
-//     Route::post('logout', [AdminController::class,'logout'])
-//         ->name('logout');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard1');
-// })->name('dashboard');
 
 
 require __DIR__.'/auth.php';

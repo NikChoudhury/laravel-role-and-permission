@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id','desc')->get();
-        return view('post',compact('posts'));
+        return view('post.post',compact('posts'));
     }
 
     /**
@@ -26,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post_create');
+        return view('post.post_create');
     }
 
     /**
@@ -63,7 +63,7 @@ class PostController extends Controller
     {
         try {
             $post = Post::findOrFail($id);
-            return view('post_show',compact('post'));
+            return view('post.post_show',compact('post'));
         } catch (\Throwable $th) {
             session()->flash('failed',__('Something Went wrong !!!'));
             return redirect()->route('admin.post.index');
@@ -80,10 +80,10 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         if (isset($post)) {           
-            return view('post_edit',compact('post'));
+            return view('post.post_edit',compact('post'));
         }else{
             session()->flash('failed',__('Data not Found!!!'));
-            return redirect()->route('admin.post.index')->withInput();
+            return redirect()->route('admin.post.index');
         }
     }
 

@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Permission extends Model
 {
     public $guarded=[];
-    
-    public function permissions()
-    {
-        return $this->hasMany(RolePermission::class,'role_id','id');
-    }
 
+    public function module()
+    {
+        return $this->belonsTo(Module::class,'module_id','id');
+    }
 }

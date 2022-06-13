@@ -37,4 +37,28 @@
 
 > Migrate Role And Post Table
 
-    php artisan migrate     
+    php artisan migrate   
+
+> Make Module Model and Migration
+
+    php artisan make:model Module -m
+
+> Make Permission Model and Migration
+
+    php artisan make:model Permission -m
+
+> Make RolePermission Model and Migration
+
+    php artisan make:model RolePermission -m   
+
+> Migrate Module,Permission And RolePermission
+
+    php artisan migrate 
+
+> For Create Permission Seeder
+
+    php artisan make:seeder PermissionSeeder
+
+>Running Permission Seeder
+
+    php artisan db:seed --class=PermissionSeeder
