@@ -19,11 +19,7 @@
                     <div class="form__div" style="margin-top: 1rem">
                       <form method="POST" action="{{ route('admin.roles.store') }}">
                         @csrf
-                        <div>
-                          <x-label for="name" :value="__('Name')" />
-          
-                          <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
-                        </div>
+                        @include('roles._form')
 
                         <x-button class="mt-4">
                           {{ __('Save') }}

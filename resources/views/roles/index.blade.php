@@ -20,9 +20,9 @@
                         <table class="table-auto" width="100%">
                             <thead style="background-color: rgb(167, 121, 121);">
                               <tr >
-                                <th width="10%">Id</th>  
-                                <th width="70%">Role Name</th>
-                                <th width="20%">Action</th>
+                                <th class="text-center" width="10%">Id</th>  
+                                <th class="text-center" width="70%">Role Name</th>
+                                <th class="text-center" width="20%">Action</th>
                               </tr>
                             </thead>
                             <tbody class="border" style="text-align: center">

@@ -20,11 +20,7 @@
                       <form method="POST" action="{{ route('admin.roles.update',$role['id']) }}">
                         @csrf
                         @method("PUT")
-                        <div>
-                          <x-label for="name" :value="__('Name')" />
-          
-                          <x-input id="name" class="block mt-1 w-full" type="text" name="name" value="{{isset($role) ? old('name',$role['name']):''}}" required />
-                        </div>
+                        @include('roles._form')
 
                         
                         <x-button class="mt-4">

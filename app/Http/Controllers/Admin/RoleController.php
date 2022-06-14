@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Permission;
+use App\Models\Module;
+use App\Models\RolePermission;
+
+
+
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -26,7 +32,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        $permissions=Permission::all();
+        $modules=Module::all();
+        return view('roles.create',compact('permissions','modules'));
     }
 
     /**
@@ -41,9 +49,17 @@ class RoleController extends Controller
             $request->validate([
                 'name' => 'required|unique:roles,name',
             ]);
+           
+            // echo "<pre>";
+            // print_r($request->all());
+            // die();
             $role = Role::create([
                 'name'=> $request['name'],
             ]);
+
+            if ($request->has('permissions')) {
+                $role->permissions()->createMany($request['permissions']);
+            }
             session()->flash('success',__('Role created successfully'));
 
             return redirect()->route('admin.roles.index');
@@ -72,8 +88,10 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        if (isset($role)) {           
-            return view('roles.edit',compact('role'));
+        if (isset($role)) {
+            $permissions=Permission::all();
+            $modules=Module::all();  
+            return view('roles.edit',compact('role','permissions','modules'));
         }else{
             session()->flash('failed',__('Data not Found!!!'));
             return redirect()->route('admin.role.index');
@@ -97,6 +115,12 @@ class RoleController extends Controller
             $role->update([
                 'name'=>$request['name'],
             ]);
+
+            RolePermission::where('role_id',$id)->delete();
+            if($request->has('permissions'))
+            {
+                $role->permissions()->createMany($request['permissions']);
+            }
             session()->flash('success',__('Role successfully Updated !!'));
             return redirect()->back();
         } catch (\Throwable $th) {
@@ -114,6 +138,7 @@ class RoleController extends Controller
     {
         try {
             $role = Role::findOrFail($id);
+            $role->permissions()->delete();
             $role->delete();
             session()->flash('success',__('Data deleted successfully'));
             return redirect()->route('admin.roles.index');
