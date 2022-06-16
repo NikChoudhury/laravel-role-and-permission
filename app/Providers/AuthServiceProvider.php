@@ -24,18 +24,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Gate::define('view_post', function ($user=null) {
-            return auth()->guard('admin')->check();
-        });
-        Gate::define('create_post', function ($user=null) {
-            return auth()->guard('admin')->check();
-        });
-        Gate::define('update_post', function ($user=null) {
-            return auth()->guard('admin')->check();
-        });
-        Gate::define('delete_post', function ($user=null) {
-            return auth()->guard('admin')->check();
-        });
+        
     }
 }
