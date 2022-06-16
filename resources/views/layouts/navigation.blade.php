@@ -23,6 +23,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index','admin.users.create','admin.users.edit')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.index','admin.roles.create','admin.roles.edit')">
                         {{ __('Role') }}
                     </x-nav-link>
@@ -87,6 +93,11 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('admin.post.index')" :active="request()->routeIs('admin.post.index','admin.post.create','admin.post.edit','admin.post.show')">
                 {{ __('Post') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.index','admin.users.create','admin.users.edit')">
+                {{ __('Users') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">

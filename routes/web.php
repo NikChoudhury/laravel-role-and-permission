@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function()
     
     //Post
     Route::resource('post', PostController::class);
+
+    // Users
+    Route::resource('users', UserController::class);
 
     // Role
     Route::resource('roles', RoleController::class);

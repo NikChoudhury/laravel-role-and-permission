@@ -76,5 +76,35 @@ class PermissionSeeder extends Seeder
             ],
         ]
         );
+
+        //roles
+        $users_module=Module::Create([
+            'name'=>'users'
+        ]);
+
+        Permission::insert(
+        [
+            [
+                'module_id'=>$users_module['id'],
+                'key'=>'view_user',
+                'name'=>'View'
+            ],
+            [
+                'module_id'=>$users_module['id'],
+                'key'=>'create_user',
+                'name'=>'Create'
+            ],
+            [
+                'module_id'=>$users_module['id'],
+                'key'=>'edit_user',
+                'name'=>'Edit'
+            ],
+            [
+                'module_id'=>$users_module['id'],
+                'key'=>'delete_user',
+                'name'=>'Delete'
+            ],
+        ]
+        );
     }
 }
