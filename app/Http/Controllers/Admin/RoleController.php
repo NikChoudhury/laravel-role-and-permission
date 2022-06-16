@@ -1,8 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\Permission;
+use App\Models\Module;
+use App\Models\RolePermission;
+
+
+
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -14,7 +21,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $roles = Role::orderBy('id','desc')->get();
+        return view('roles.index',compact('roles'));
     }
 
     /**
@@ -24,7 +32,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions=Permission::all();
+        $modules=Module::all();
+        return view('roles.create',compact('permissions','modules'));
     }
 
     /**
@@ -35,7 +45,27 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $request->validate([
+                'name' => 'required|unique:roles,name',
+            ]);
+           
+            // echo "<pre>";
+            // print_r($request->all());
+            // die();
+            $role = Role::create([
+                'name'=> $request['name'],
+            ]);
+
+            if ($request->has('permissions')) {
+                $role->permissions()->createMany($request['permissions']);
+            }
+            session()->flash('success',__('Role created successfully'));
+
+            return redirect()->route('admin.roles.index');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -55,9 +85,17 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
-        //
+        $role = Role::find($id);
+        if (isset($role)) {
+            $permissions=Permission::all();
+            $modules=Module::all();  
+            return view('roles.edit',compact('role','permissions','modules'));
+        }else{
+            session()->flash('failed',__('Data not Found!!!'));
+            return redirect()->route('admin.role.index');
+        }
     }
 
     /**
@@ -67,9 +105,27 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $role=Role::findOrFail($id);
+            $request->validate([
+                'name' => 'required|unique:roles,name,'.$id,
+            ]);
+            $role->update([
+                'name'=>$request['name'],
+            ]);
+
+            RolePermission::where('role_id',$id)->delete();
+            if($request->has('permissions'))
+            {
+                $role->permissions()->createMany($request['permissions']);
+            }
+            session()->flash('success',__('Role successfully Updated !!'));
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     /**
@@ -78,8 +134,18 @@ class RoleController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+    public function destroy($id)
     {
-        //
+        try {
+            $role = Role::findOrFail($id);
+            $role->permissions()->delete();
+            $role->delete();
+            session()->flash('success',__('Data deleted successfully'));
+            return redirect()->route('admin.roles.index');
+
+        } catch (\Throwable $th) {
+            session()->flash('failed',__('Something Went wrong !!!'));
+            return redirect()->route('admin.roles.index');
+        }
     }
 }
