@@ -34,21 +34,25 @@
                                     <td>{{$post['created_by']}}</td>
                                     <td>
                                         <div style="display: flex;aline-items:center;justify-content: center;margin:.2rem 0rem">
+                                            @can('edit_post')
                                             <x-link-button href="{{ route('admin.post.edit',$post['id']) }}" style="background-color: rgb(103, 103, 192)">
                                                 {{ __('Edit') }}
                                             </x-link-button>
-
+                                            @endcan
+                                            @can('view_post')
                                             <x-link-button href="{{ route('admin.post.show',$post['id']) }}" style="background-color: rgb(57, 197, 213); margin-left:.4rem">
                                                 {{ __('Show') }}
                                             </x-link-button>
-    
+                                            @endcan
+                                            @can('delete_post')
                                             <form method="POST" action="{{ route('admin.post.destroy',$post['id']) }}">
                                                 @csrf
                                                 @method("DELETE")
                                                 <x-button class="ml-3" style="background-color: rgb(244, 75, 75)">
                                                     {{ __('Delete') }}
                                                 </x-button>
-                                            </form>    
+                                            </form> 
+                                            @endcan  
     
                                         </div>
                                         
