@@ -48,20 +48,21 @@
                                         </td>
                                         <td>
                                             <div style="display: flex;aline-items:center;justify-content: center;margin:.2rem 0rem">
+                                                @can('edit_user')
                                                 <x-link-button href="{{ route('admin.users.edit',$user['id']) }}" style="background-color: rgb(103, 103, 192)">
                                                     {{ __('Edit') }}
                                                 </x-link-button>
-
+                                                @endcan
                                     
-        
+                                                @can('delete_user')
                                                 <form method="POST" action="{{ route('admin.users.destroy',$user['id']) }}">
                                                     @csrf
                                                     @method("DELETE")
                                                     <x-button class="ml-3" style="background-color: rgb(244, 75, 75)">
                                                         {{ __('Delete') }}
                                                     </x-button>
-                                                </form>    
-        
+                                                </form>
+                                                @endcan    
                                             </div>
                                             
                                         </td>

@@ -7,13 +7,19 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\Module;
 use App\Models\RolePermission;
-
-
-
 use Illuminate\Http\Request;
-
+use Gate;
 class RoleController extends Controller
 {
+    // assign roles
+    public function __construct()
+    {
+        $this->middleware('can:view_role',     ['only' => ['index', 'show','view']]);
+        $this->middleware('can:create_role',   ['only' => ['create', 'store']]);
+        $this->middleware('can:edit_role',     ['only' => ['edit', 'update']]);
+        $this->middleware('can:delete_role',   ['only' => ['destroy']]);
+    }
+    
     /**
      * Display a listing of the resource.
      *

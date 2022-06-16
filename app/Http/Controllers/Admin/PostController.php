@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    // assign roles
+    public function __construct()
+    {
+        $this->middleware('can:view_post',     ['only' => ['index', 'show','view']]);
+        $this->middleware('can:create_post',   ['only' => ['create', 'store']]);
+        $this->middleware('can:edit_post',     ['only' => ['edit', 'update']]);
+        $this->middleware('can:delete_post',   ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

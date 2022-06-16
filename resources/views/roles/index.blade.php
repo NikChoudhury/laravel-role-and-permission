@@ -34,12 +34,13 @@
                                         
                                         <td>
                                             <div style="display: flex;aline-items:center;justify-content: center;margin:.2rem 0rem">
+                                                @can('edit_role')
                                                 <x-link-button href="{{ route('admin.roles.edit',$role['id']) }}" style="background-color: rgb(103, 103, 192)">
                                                     {{ __('Edit') }}
                                                 </x-link-button>
-
+                                                @endcan
                                     
-        
+                                                @can('delete_role')
                                                 <form method="POST" action="{{ route('admin.roles.destroy',$role['id']) }}">
                                                     @csrf
                                                     @method("DELETE")
@@ -47,7 +48,7 @@
                                                         {{ __('Delete') }}
                                                     </x-button>
                                                 </form>    
-        
+                                                @endcan
                                             </div>
                                             
                                         </td>

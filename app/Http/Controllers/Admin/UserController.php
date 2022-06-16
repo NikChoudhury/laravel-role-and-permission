@@ -11,6 +11,14 @@ use App\Models\UserRole;
 
 class UserController extends Controller
 {
+    // assign roles
+    public function __construct()
+    {
+        $this->middleware('can:view_user',     ['only' => ['index', 'show','view']]);
+        $this->middleware('can:create_user',   ['only' => ['create', 'store']]);
+        $this->middleware('can:edit_user',     ['only' => ['edit', 'update']]);
+        $this->middleware('can:delete_user',   ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
