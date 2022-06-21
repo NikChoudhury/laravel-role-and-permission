@@ -21,6 +21,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('login', [AdminController::class, 'login'])
+->name('login');
+
+Route::post('login_submit', [AdminController::class, 'login_submit'])
+->name('login_submit');
+
 Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function(){
     // Dashboard 
     Route::get('dashboard', function () {
@@ -40,7 +46,3 @@ Route::group(['prefix'=>'admin','as'=>'admin.','middleware'=>'Admin'],function()
     Route::post('logout', [AdminController::class,'logout'])
         ->name('logout');
 });
-
-
-
-require __DIR__.'/auth.php';

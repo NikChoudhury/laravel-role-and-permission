@@ -31,20 +31,32 @@
                                 <tr>
                                     <td>{{$post['id']}}</td>
                                     <td>{{$post['name']}}</td>
-                                    <td>{{$post['created_by']}}</td>
+                                    <td>
+                                        {{$post->user->name}}
+                                        <br>
+                                        <small>{{$post->user->email}}</small>
+                                    </td>
                                     <td>
                                         <div style="display: flex;aline-items:center;justify-content: center;margin:.2rem 0rem">
-                                            @can('edit_post')
+                                            {{-- @if(Gate::check('edit_post') || Auth::guard('admin')->user()->can('update', $post) )
                                             <x-link-button href="{{ route('admin.post.edit',$post['id']) }}" style="background-color: rgb(103, 103, 192)">
                                                 {{ __('Edit') }}
                                             </x-link-button>
-                                            @endcan
+                                            @endif --}}
+                                            @canany(['update', 'edit_post'], $post)
+                                            <x-link-button href="{{ route('admin.post.edit',$post['id']) }}" style="background-color: rgb(103, 103, 192)">
+                                                {{ __('Edit') }}
+                                            </x-link-button>
+                                            @endcanany
+                                           
+                                         
                                             @can('view_post')
                                             <x-link-button href="{{ route('admin.post.show',$post['id']) }}" style="background-color: rgb(57, 197, 213); margin-left:.4rem">
                                                 {{ __('Show') }}
                                             </x-link-button>
                                             @endcan
-                                            @can('delete_post')
+
+                                            @if(Gate::check('delete_post') || Auth::guard('admin')->user()->can('delete', $post) )
                                             <form method="POST" action="{{ route('admin.post.destroy',$post['id']) }}">
                                                 @csrf
                                                 @method("DELETE")
@@ -52,7 +64,7 @@
                                                     {{ __('Delete') }}
                                                 </x-button>
                                             </form> 
-                                            @endcan  
+                                            @endif  
     
                                         </div>
                                         
@@ -61,6 +73,10 @@
                                 @endforeach
                             </tbody>
                           </table>
+                          
+                    </div>
+                    <div class="">
+                        {!! $posts->links() !!}
                     </div>
                     
                 </div>

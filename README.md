@@ -1,5 +1,12 @@
 # Laravel ROLE and PERMISSION
 
+This project is related to some operation of Laravel Role And Permission using Laravel Inbuild package.
+We know that implementing user roles and permissions is one of the basic functionality to implement in our web applications to restrict the specific user with only admin allowed to access. That's why we need to implement role-based users with assigned permissions.
+
+-- Laravel Version 8
+
+- These are some artisan command that i used during creating this Project
+
 > Create a new Laravel Project
 
     laravel new role-and-permission
@@ -82,3 +89,23 @@
 > Running User Seeder
 
     php artisan db:seed --class=UserSeeder
+
+> Create Post Policy For Individual User Permissions
+
+    php artisan make:policy PostPolicy --model=Post
+
+> Error view Page Publish
+
+    php artisan vendor:publish --tag=laravel-errors
+
+> For Create Post Seeder
+
+    php artisan make:seeder PostSeeder
+
+> For Create Post Factory
+
+    php artisan make:factory PostFactory --model=Post
+
+> Running Post Seeder
+
+    php artisan db:seed --class=PostSeeder

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
-
+use Gate;
+use Auth;
 class PostController extends Controller
 {
     // assign roles
@@ -13,8 +15,8 @@ class PostController extends Controller
     {
         $this->middleware('can:view_post',     ['only' => ['index', 'show','view']]);
         $this->middleware('can:create_post',   ['only' => ['create', 'store']]);
-        $this->middleware('can:edit_post',     ['only' => ['edit', 'update']]);
-        $this->middleware('can:delete_post',   ['only' => ['destroy']]);
+        // $this->middleware('can:edit_post',     ['only' => ['edit', 'update']]);
+        // $this->middleware('can:delete_post',   ['only' => ['destroy']]);
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +25,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('id','desc')->get();
+        // $posts = Post::orderBy('id','desc')->get();
+        $posts = Post::orderBy('id','desc')->paginate(10);
         return view('post.post',compact('posts'));
     }
 
@@ -73,8 +76,7 @@ class PostController extends Controller
             $post = Post::findOrFail($id);
             return view('post.post_show',compact('post'));
         } catch (\Throwable $th) {
-            session()->flash('failed',__('Something Went wrong !!!'));
-            return redirect()->route('admin.post.index');
+            abort(404);
         }
     }
 
@@ -87,8 +89,17 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::find($id);
-        if (isset($post)) {           
-            return view('post.post_edit',compact('post'));
+        
+        if (isset($post)) {   
+            $user = User::where('id',$post->created_by)->first();
+
+            if (! $user->canany(['update', 'edit_post'], $post)) {
+                abort(403,"THIS ACTION IS UNAUTHORIZED.");
+            }
+
+            return view('post.post_edit',compact('post'));    
+
+                    
         }else{
             session()->flash('failed',__('Data not Found!!!'));
             return redirect()->route('admin.post.index');
@@ -106,16 +117,24 @@ class PostController extends Controller
     {
         try {
             $post=Post::findOrFail($id);
-            $request->validate([
-                'name' => 'required|unique:posts,name,'.$id,
-            ]);
-            $post->update([
-                'name'=>$request['name'],
-                'content'=>$request['content'],
-
-            ]);
-            session()->flash('success',__('Post successfully Updated !!'));
-            return redirect()->back();
+            if(isset($post)){
+                $user = User::where('id',$post->created_by)->first();
+                //If Unauthorized User 
+                if (!$user->canany(['update', 'edit_post'], $post)){
+                    abort(403,"THIS ACTION IS UNAUTHORIZED.");
+                }
+    
+                $request->validate([
+                    'name' => 'required|unique:posts,name,'.$id,
+                ]);
+                $post->update([
+                    'name'=>$request['name'],
+                    'content'=>$request['content'],
+    
+                ]);
+                session()->flash('success',__('Post successfully Updated !!'));
+                return redirect()->back();
+            }
             
         } catch (\Throwable $th) {
            throw $th;
@@ -132,9 +151,16 @@ class PostController extends Controller
     {
         try {
             $post = Post::findOrFail($id);
-            $post->delete();
-            session()->flash('success',__('Data deleted successfully'));
-            return redirect()->route('admin.post.index');
+            
+            if(isset($post)){
+                $user = User::where('id',$post->created_by)->first();
+                if (!$user->canany(['delete', 'delete_post'], $post)){
+                    abort(403,"THIS ACTION IS UNAUTHORIZED.");
+                }
+                $post->delete();
+                session()->flash('success',__('Data deleted successfully'));
+                return redirect()->route('admin.post.index');
+            }
 
         } catch (\Throwable $th) {
             session()->flash('failed',__('Something Went wrong !!!'));

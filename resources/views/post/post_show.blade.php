@@ -26,7 +26,7 @@
                         <div class="mt-4">
                           <x-label for="created_by" :value="__('Writter')" />
           
-                          <x-input id="created_by" class="block mt-1 w-full" type="text" name="name" value="{{isset($post) ? $post['created_by'] : ''}}" :disabled="true" />
+                          <x-input id="created_by" class="block mt-1 w-full" type="text" name="name" value="{{isset($post) ? $post->user->name : ''}}" :disabled="true" />
                         </div>
                         <div class="mt-4">
                           <x-label for="content" :value="__('Content')" />
