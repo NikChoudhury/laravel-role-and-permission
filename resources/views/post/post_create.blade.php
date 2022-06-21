@@ -30,7 +30,7 @@
           
                           <x-textarea id="content" class="block mt-1 w-full" type="text" name="content" required >{{old('content','')}}</x-textarea>
                         </div>
-                        <input type="hidden" name="created_by" @if(Auth::guard('admin')->check()) value="{{ Auth::guard('admin')->user()->name }}"@endif>
+                        <input type="hidden" name="created_by" @if(Auth::guard('admin')->check()) value="{{ Auth::guard('admin')->user()->id }}"@endif>
                         <x-button class="mt-4">
                           {{ __('Save') }}
                         </x-button>

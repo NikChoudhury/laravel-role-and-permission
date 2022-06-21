@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Auth;
+use App\Policies\PostPolicy;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -14,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Post::class => PostPolicy::class,
     ];
 
     /**
@@ -40,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider
                         {
                             return true;
                         }
-                        
+
                         //other users
                         $roles=\App\Models\UserRole::where('user_id',auth()->guard('admin')->user()['id'])->select('role_id')->get();
                         $has_permission=false;
@@ -54,8 +56,8 @@ class AuthServiceProvider extends ServiceProvider
                             }
         
                         }
-                        
-                        return $has_permission;
+                          
+                        return $has_permission;    
                    }
                 });
             }
@@ -63,8 +65,6 @@ class AuthServiceProvider extends ServiceProvider
             Gate::define('admin', function ($user=null) {
                 return auth()->guard('admin')->check();
             });
-    
-           
 
         }
 
