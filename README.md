@@ -6,8 +6,10 @@ We know that implementing user roles and permissions is one of the basic functio
 -- Laravel Version 8
 
 Super Admin Login
+
 email : nikunchoudhury@gmail.com
-pass : 123456
+
+password : 123456
 
 - These are some artisan command that i used during creating this Project
 
